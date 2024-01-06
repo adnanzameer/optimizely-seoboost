@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SeoBoost.Business.Events;
 using SeoBoost.Business.Initialization;
 using SeoBoost.Business.Url;
+using SeoBoost.Helper.AlternateLinks;
 using SeoBoost.Models;
 
 namespace SeoBoost.Business.Configuration
@@ -21,9 +22,11 @@ namespace SeoBoost.Business.Configuration
         {
             services.AddHttpContextOrThreadScoped<IUrlService, UrlService>();
             services.AddTransient<IViewTemplateModelRegistrator, TemplateCoordinator>();
+            services.AddTransient<IAlternateLinksHelper, AlternateLinksHelper>();
             services.AddSingleton<SeoBoostInitializer>();
+            services.AddSingleton<UrlBuilder>();
 
-
+            
             var providerOptions = new SeoBoostOptions();
             setupAction(providerOptions);
 

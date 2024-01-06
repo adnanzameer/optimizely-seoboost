@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Core.Internal;
@@ -32,7 +33,10 @@ namespace SeoBoost.Business.Url
 
             if (_configuration.UseSimpleAddress)
             {
-                _contentRepository.TryGet<PageData>(contentLink, out var pageData);
+                var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(contentLanguage) };
+
+                var pageData = _contentRepository.Get<PageData>(contentLink, loadingOptions);
+
                 if (pageData != null && !string.IsNullOrEmpty(pageData.ExternalURL))
                 {
                     result = pageData.ExternalURL;

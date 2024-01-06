@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.IO;
 using EPiServer;
 using EPiServer.Core;
 using EPiServer.Globalization;
+using EPiServer.Web.Routing;
 using Microsoft.Extensions.Options;
 using SeoBoost.Models;
 
@@ -12,24 +14,25 @@ namespace SeoBoost.Business.Url
     {
         private readonly SeoBoostOptions _configuration;
         private readonly IContentRepository _contentRepository;
-
         private readonly UrlBuilder _builder;
+        private readonly RoutingOptions _routingOptions;
 
-        public UrlService(UrlBuilder builder, IOptions<SeoBoostOptions> options, IContentRepository contentRepository)
+        public UrlService(UrlBuilder builder, IOptions<SeoBoostOptions> options, IContentRepository contentRepository, RoutingOptions routingOptions)
         {
             _builder = builder;
             _contentRepository = contentRepository;
+            _routingOptions = routingOptions;
             _configuration = options.Value;
         }
 
         public string GetExternalUrl(ContentReference contentReference, CultureInfo culture)
         {
-            return TransformUrl(_builder.ContentExternalUrl(contentReference, culture));
+            return ApplyTrailingSlash(_builder.ContentExternalUrl(contentReference, culture));
         }
 
         public string GetExternalUrl(ContentReference contentReference)
         {
-            return TransformUrl(_builder.ContentExternalUrl(contentReference, ContentLanguage.PreferredCulture));
+            return ApplyTrailingSlash(_builder.ContentExternalUrl(contentReference, ContentLanguage.PreferredCulture));
         }
 
         public string GetCanonicalLink(ContentReference contentReference)
@@ -53,36 +56,34 @@ namespace SeoBoost.Business.Url
                                        && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
                         if (validUrl)
-                            return TransformUrl(customCanonicalTagFieldName);
+                            return ApplyTrailingSlash(customCanonicalTagFieldName);
                     }
                 }
             }
             return GetExternalUrl(contentReference, culture);
         }
 
-        private string TransformUrl(string url)
+        private string ApplyTrailingSlash(string url)
         {
+            var useTrailingSlash = _routingOptions.UseTrailingSlash;
             if (!string.IsNullOrEmpty(url))
             {
-                if (_configuration.UseTrailingSlash)
+                if (_routingOptions.UseTrailingSlash)
                 {
                     if (!url.EndsWith("/"))
                     {
                         url += "/";
                     }
                 }
-                else
+                else if (url.EndsWith("/"))
                 {
-                    if (url.EndsWith("/"))
-                    {
-                        url = url.TrimEnd('/');
-                    }
+                    url = url.TrimEnd('/');
                 }
 
                 return url.ToLower();
             }
 
-            return _configuration.UseTrailingSlash ? "/" : string.Empty;
+            return useTrailingSlash ? "/" : string.Empty;
         }
     }
 }

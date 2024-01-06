@@ -44,6 +44,14 @@ public abstract class SitePageData : PageData, ICustomCssInContentArea
 
     [Display(
         GroupName = Globals.GroupNames.MetaData,
+        Name = "Canonical Tag",
+        Description = "If Filled it will replace the auto generated canonical tag",
+        Order = 310)]
+    [CultureSpecific]
+    public virtual string CanonicalTag { get; set; }
+
+    [Display(
+        GroupName = Globals.GroupNames.MetaData,
         Order = 400)]
     [CultureSpecific]
     public virtual bool DisableIndexing { get; set; }

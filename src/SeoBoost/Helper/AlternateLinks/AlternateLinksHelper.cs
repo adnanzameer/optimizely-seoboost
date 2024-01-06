@@ -62,7 +62,7 @@ namespace SeoBoost.Helper.AlternateLinks
                                 masterLanguageBranch = p.Language;
                             }
 
-                            var url = _urlService.GetExternalUrl(pageData.ContentLink, new CultureInfo(p.Language.Name));
+                            var url = _urlService.GetCanonicalLink(pageData.ContentLink, new CultureInfo(p.Language.Name));
 
                             if (!alternates.Any(x => x.Url.Equals(url, StringComparison.OrdinalIgnoreCase)))
                             {

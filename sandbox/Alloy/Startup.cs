@@ -35,7 +35,11 @@ public class Startup
         // Required by Wangkanai.Detection
         services.AddDetection();
 
-        services.AddSeoBoost();
+        services.AddSeoBoost(x =>
+        {
+            x.CustomCanonicalTagFieldName = "CanonicalTag";
+            x.UseSimpleAddress = true;
+        });
 
         services.AddSession(options =>
         {
@@ -43,6 +47,11 @@ public class Startup
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
         });
+
+        //services.Configure<RoutingOptions>(options =>
+        //{
+        //    options.UseTrailingSlash = false;
+        //});
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
