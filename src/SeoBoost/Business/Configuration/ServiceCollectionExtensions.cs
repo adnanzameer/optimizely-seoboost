@@ -12,12 +12,7 @@ namespace SeoBoost.Business.Configuration
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddAdvancedTaskManager(this IServiceCollection services, Action<SeoBoostOptions> setupAction)
-        {
-            return AddAdvancedTaskManager(services, setupAction);
-        }
-
-        public static IServiceCollection AddAdvancedTaskManager(this IServiceCollection services)
+        public static IServiceCollection AddSeoBoost(this IServiceCollection services)
         {
             return AddSeoBoost(services, _ => { });
         }
