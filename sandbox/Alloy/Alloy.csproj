@@ -13,8 +13,23 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="EPiServer.CMS" Version="12.6.0" />
-    <PackageReference Include="Wangkanai.Detection" Version="5.2.0" />
+	  <PackageReference Include="EPiServer.CMS" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.CMS.AspNetCore" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.CMS.AspNetCore.Mvc" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.CMS.AspNetCore.Routing" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.CMS.AspNetCore.Templating" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.CMS.Core" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.CMS.UI" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.CMS.UI.Admin" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.CMS.UI.AspNetIdentity" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.CMS.UI.Core" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.CMS.UI.Settings" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.CMS.UI.VisitorGroups" Version="12.18.0" />
+	  <PackageReference Include="EPiServer.Framework" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.Framework.AspNetCore" Version="12.14.0" />
+	  <PackageReference Include="EPiServer.Labs.LanguageManager" Version="5.2.0" />
+	  <PackageReference Include="Wangkanai.Detection" Version="5.2.0" />
   </ItemGroup>
   
   <ItemGroup>
