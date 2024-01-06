@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+
+	<TargetFramework>net5.0</TargetFramework>
+	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+	<PackageId>SeoBoost</PackageId>
+	<Title>SeoBoost</Title>
+	<version>2.0.2</version>
+	<Authors>Adnan Zameer</Authors>
+	<Company>Adnan Zameer</Company>
+	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	<PackageProjectUrl>https://github.com/adnanzameer/SEOBOOST</PackageProjectUrl>
+	<PackageIcon>icon.png</PackageIcon>
+	<iconUrl>https://raw.githubusercontent.com/adnanzameer/SEOBOOST/master/boost.png</iconUrl>
+	<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	<Description>SEOBOOST for Optimizely - Improves SEO ranking of the website with HtmlHelper methods for Internationalization i.e hreflang attributes (Alternate links), canonical tag (rel canonical), Breadcrumbs and editable robots.txt</Description>
+	<PackageReleaseNotes>https://github.com/adnanzameer/SEOBOOST/blob/master/CHANGELOG.md</PackageReleaseNotes>
+	<PackageTags>seo hreflang alternate links canonical tag breadcrumbs robots.txt internationalization</PackageTags>
+	<RepositoryUrl>https://github.com/adnanzameer/SEOBOOST.git</RepositoryUrl>
+
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="EPiServer.CMS" Version="12.0.2" />
+	<PackageReference Include="EPiServer.Framework" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Include="msbuild\Main.proj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\images\icon.png">
+			<Pack>true</Pack>
+			<PackagePath>\</PackagePath>
+			<Link>icon.png</Link>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Extensions\" />
+	</ItemGroup>
+
+  <Import Project="msbuild\Main.proj" />
+
+</Project>
