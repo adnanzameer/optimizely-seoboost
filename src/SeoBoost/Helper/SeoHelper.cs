@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SeoBoost.Business.Url;
 using SeoBoost.Helper.AlternateLinks;
-using SeoBoost.Models;
 using SeoBoost.Models.ViewModels;
 
 namespace SeoBoost.Helper
@@ -49,7 +48,7 @@ namespace SeoBoost.Helper
 
             var sb = new StringBuilder();
             var urlService = ServiceLocator.Current.GetInstance<IUrlService>();
-            sb.AppendLine("<link rel=\"canonical\" href=\"" + urlService.GetCanonicalLink(contentReference, ContentLanguage.PreferredCulture) + "\" />");
+            sb.AppendLine("<link rel=\"canonical\" href=\"" + urlService.GetExternalUrl(contentReference, ContentLanguage.PreferredCulture) + "\" />");
             return new HtmlString(sb.ToString());
         }
 
