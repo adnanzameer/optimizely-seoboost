@@ -38,7 +38,7 @@ public class Startup
         services.AddSeoBoost(x =>
         {
             x.CustomCanonicalTagFieldName = "CanonicalTag";
-            x.UseSimpleAddress = true;
+            x.UseSimpleAddressAsPath = true;
         });
 
         services.AddSession(options =>

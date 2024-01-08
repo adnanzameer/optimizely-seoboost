@@ -53,7 +53,7 @@ namespace SeoBoost.Business.Url
                 pageData = GetMirroredTarget(pageData, contentLanguage);
             }
 
-            if (string.IsNullOrEmpty(result) && _configuration.UseSimpleAddress && !string.IsNullOrEmpty(pageData.ExternalURL))
+            if (string.IsNullOrEmpty(result) && _configuration.UseSimpleAddressAsPath && !string.IsNullOrEmpty(pageData.ExternalURL))
             {
                 result = pageData.ExternalURL;
             }

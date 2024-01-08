@@ -2,7 +2,7 @@
 {
     public class SeoBoostOptions
     {
-        public bool UseSimpleAddress { get; set; } = false;
+        public bool UseSimpleAddressAsPath { get; set; } = false;
         public bool UseMirrorPageReference { get; set; } = true;
         public bool EnableRobotsFileSupport { get; set; } = false;
         public bool UseSiteUrlAsHost { get; set; } = false;
