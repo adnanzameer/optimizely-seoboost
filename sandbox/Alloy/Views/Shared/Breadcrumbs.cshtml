@@ -1,5 +1,4 @@
-@using EPiServer.Core
-@using EPiServer.Web
+@model IPageViewModel<SitePageData>
 
 @*Helper used as template for a page in the bread crumb, recursively triggering the rendering of the next page*@
 
@@ -29,6 +28,8 @@
 
         return new HelperResult(w => Task.CompletedTask);
     }
+
+    var breadCrumbList = SeoBoost.Extensions.BreadcrumbExtensions.GetBreadcrumbItemList(Model.CurrentPage);
 }
 
 <nav aria-label="breadcrumb">
@@ -37,5 +38,39 @@
             @Html.ContentLink(SiteDefinition.Current.StartPage)
         </li>
         @Html.MenuList(SiteDefinition.Current.StartPage, ItemTemplate, requireVisibleInMenu: false, requirePageTemplate: false)
+    </ol>
+</nav>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb d-none d-lg-flex">
+        @{
+            foreach (var item in breadCrumbList)
+            {
+                if (item.Selected)
+                {
+                    <li class="breadcrumb-item active">
+                        <span itemprop="name">@item.PageData.PageName</span>
+                        <meta content="@item.Position" itemprop="position">
+                    </li>
+                }
+                else if (item.PageData.HasTemplate() && !item.PageData.ContentLink.CompareToIgnoreWorkID(Model.CurrentPage.ContentLink))
+                {
+                    <li class="breadcrumb-item">
+                        <a href="@Url.ContentUrl(item.PageData.ContentLink)" itemprop="item" itemscope itemtype="http://schema.org/Thing">
+                            <span itemprop="name">@item.PageData.PageName</span>
+                        </a>
+                        <meta content="@item.Position" itemprop="position">
+                    </li>
+                }
+                else //OPTIONAL
+                {
+                    <li class="breadcrumb-item">
+                        <span itemprop="name">@item.PageData.PageName</span>
+                        <meta content="@item.Position" itemprop="position">
+                    </li>
+                }
+                // <span class="divider">/</span>
+            }
+        }
     </ol>
 </nav>

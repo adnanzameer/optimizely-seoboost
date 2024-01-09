@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/Layouts/_Root.cshtml";
 }
 
-@{await Html.RenderPartialAsync("Breadcrumbs");}
+@{await Html.RenderPartialAsync("Breadcrumbs", Model);}
 
 <div class="row">
     <div class="col-12 col-md-8 col-lg-9">
