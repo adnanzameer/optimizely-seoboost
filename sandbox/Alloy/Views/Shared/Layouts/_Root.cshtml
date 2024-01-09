@@ -1,5 +1,5 @@
 @using EPiServer.Framework.Web.Mvc.Html
-@using SeoBoost.Helper
+@using SeoBoost.Extensions
 
 @model IPageViewModel<SitePageData>
 
@@ -18,14 +18,17 @@
     {
         <meta name="description" content="@Model.CurrentPage.MetaDescription" />
     }
-    @* Episerver *@
+    <!-- Episerver -->
     @Html.CanonicalLink()
     @Html.AlternateLinks()
-    @* End Episerver *@
-    @* SEOBOOST *@
+    <!-- End Episerver -->
+    
+
+    <!-- SEOBOOST -->
     @Html.GetCanonicalLink()
     @Html.GetAlternateLinks()
-    @* END SEOBOOST *@
+    <!-- END SEOBOOST -->
+
     <link rel="stylesheet" href="~/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/style.min.css" />
     <link rel="stylesheet" href="~/css/theme.min.css" />

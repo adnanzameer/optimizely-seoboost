@@ -7,7 +7,7 @@ using EPiServer.Web;
 
 namespace SeoBoost.Models.Pages
 {
-    [ContentType(DisplayName = "robots.txt", GUID = "20abf142-91eb-4a13-9196-f6de727b4e4c", Order = 100, GroupName = "SEOBOOST", Description = "Used to create editable robots.txt file.")]
+    [ContentType(DisplayName = "robots.txt", GUID = "20abf142-91eb-4a13-9196-f6de727b4e4c", Order = 100, GroupName = "SEOBOOST", Description = "Utilized for generating a customizable robots.txt file specific to each site.")]
     public class SBRobotsTxt: PageData
     {
         [Display(

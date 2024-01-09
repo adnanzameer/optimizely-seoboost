@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.Globalization;
 using SeoBoost.Models.Pages;
 
 namespace SeoBoost.Business.Events
@@ -42,15 +43,15 @@ namespace SeoBoost.Business.Events
 
             if (e.TargetLink.ID == ContentReference.StartPage.ID)
             {
-                var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage,
-                    new LoaderOptions { LanguageLoaderOption.FallbackWithMaster() });
+                var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };
+
+                var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage, loadingOptions);
 
                 var robotTxtPages = items.ToList();
                 if (robotTxtPages.Any())
                 {
-                    var parent = _contentLoader.Get<PageData>(robotTxtPages.First().ParentLink);
-                    e.CancelReason = "robots.txt page already exist under " + parent.Name + " (" + parent.ContentLink.ID +
-                                     ")";
+                    var parent = _contentLoader.Get<PageData>(robotTxtPages.First().ParentLink, loadingOptions);
+                    e.CancelReason = $"robots.txt page already exist under {parent.Name} ({parent.ContentLink.ID})";
                     e.CancelAction = true;
                 }
 
@@ -68,15 +69,15 @@ namespace SeoBoost.Business.Events
 
             if (e.Content.ParentLink.ID == ContentReference.StartPage.ID)
             {
-                var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage,
-                    new LoaderOptions { LanguageLoaderOption.FallbackWithMaster() });
+                var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };
+
+                var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage, loadingOptions);
 
                 var robotTxtPages = items.ToList();
                 if (robotTxtPages.Any())
                 {
-                    var parent = _contentLoader.Get<PageData>(robotTxtPages.First().ParentLink);
-                    e.CancelReason = "robots.txt page already exist under " + parent.Name + " (" + parent.ContentLink.ID +
-                                     ")";
+                    var parent = _contentLoader.Get<PageData>(robotTxtPages.First().ParentLink, loadingOptions);
+                    e.CancelReason = $"robots.txt page already exist under {parent.Name} ({parent.ContentLink.ID})";
                     e.CancelAction = true;
                 }
 

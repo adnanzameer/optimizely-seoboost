@@ -92,7 +92,7 @@ namespace SeoBoost.Helper.AlternateLinks
         public HtmlString GetAlternateLinks(ContentReference contentReference)
         {
             if (!ProcessRequest)
-                return new HtmlString("");
+                return HtmlString.Empty; 
 
             var model = GetAlternateLinksModel(contentReference);
 
@@ -102,7 +102,7 @@ namespace SeoBoost.Helper.AlternateLinks
                 return htmlString;
             }
 
-            return new HtmlString("");
+            return HtmlString.Empty;
         }
 
         private HtmlString CreateHtmlString(AlternativeLinkViewModel model)
@@ -121,8 +121,7 @@ namespace SeoBoost.Helper.AlternateLinks
 
             return new HtmlString(sb.ToString());
         }
-
-
+        
         private bool ProcessRequest
         {
             get

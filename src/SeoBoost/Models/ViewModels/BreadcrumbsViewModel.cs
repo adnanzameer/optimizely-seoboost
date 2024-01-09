@@ -2,13 +2,14 @@
 using System.Linq;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.Globalization;
 using EPiServer.ServiceLocation;
 
 namespace SeoBoost.Models.ViewModels
 {
     public class BreadcrumbsViewModel
     {
-        private static readonly Injected<IContentLoader> _contentLoader;
+        private static readonly Injected<IContentLoader> ContentLoader;
 
         public readonly List<BreadcrumbItemListElementViewModel> BreadcrumbItemList;
 
@@ -88,8 +89,9 @@ namespace SeoBoost.Models.ViewModels
 
         private static PageData GetPageData(ContentReference reference)
         {
-            
-            var pageData = _contentLoader.Service.Get<IContent>(reference) as PageData;
+            var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };
+
+            var pageData = ContentLoader.Service.Get<IContent>(reference, loadingOptions) as PageData;
             return pageData;
         }
 
@@ -100,7 +102,7 @@ namespace SeoBoost.Models.ViewModels
                 page,
                 IncrementIndex(),
                 selected,
-                _contentLoader.Service.GetChildren<PageData>(page.ContentLink).Any()
+                ContentLoader.Service.GetChildren<PageData>(page.ContentLink).Any()
                 );
 
             return breadcrumbCurrentPageElement;
@@ -116,7 +118,9 @@ namespace SeoBoost.Models.ViewModels
             if (currentPage.ParentLink == PageReference.EmptyReference)
                 return null;
 
-            return _contentLoader.Service.Get<IContent>(currentPage.ParentLink) as PageData;
+            var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };
+
+            return ContentLoader.Service.Get<IContent>(currentPage.ParentLink, loadingOptions) as PageData;
         }
     }
 }

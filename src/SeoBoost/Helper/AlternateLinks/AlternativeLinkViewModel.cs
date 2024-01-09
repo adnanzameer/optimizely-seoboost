@@ -6,13 +6,17 @@ namespace SeoBoost.Helper.AlternateLinks
     {
         public readonly ICollection<AlternativePageLink> Alternates;
         public string XDefaultUrl { get; set; }
-        public readonly string CanonicalUrl;
 
         public AlternativeLinkViewModel(ICollection<AlternativePageLink> alternates)
         {
             Alternates = alternates;
             XDefaultUrl = "";
-            CanonicalUrl = "";
+        }
+
+        public AlternativeLinkViewModel()
+        {
+            Alternates = new List<AlternativePageLink>();
+            XDefaultUrl = "";
         }
     }
 }
