@@ -141,22 +141,16 @@ namespace SeoBoost.Business.Url
             if (string.IsNullOrEmpty(propertyValue))
                 return null;
 
-            if (Uri.TryCreate(propertyValue, UriKind.Absolute, out var uriResult) &&
-                (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps))
-            {
-                if (!Uri.TryCreate(propertyValue, UriKind.RelativeOrAbsolute, out var customRelativeUri))
-                    return ApplyTrailingSlash(propertyValue);
+            if (!Uri.TryCreate(propertyValue, UriKind.RelativeOrAbsolute, out var customRelativeUri))
+                return null;
 
-                if (customRelativeUri.IsAbsoluteUri)
-                    return ApplyTrailingSlash(propertyValue);
+            if (customRelativeUri.IsAbsoluteUri)
+                return ApplyTrailingSlash(propertyValue);
 
-                var siteUri = new Uri(SiteDefinition.Current.SiteUrl.AbsoluteUri);
-                var absoluteUri = new Uri(siteUri, customRelativeUri);
+            var siteUri = new Uri(SiteDefinition.Current.SiteUrl.AbsoluteUri);
+            var absoluteUri = new Uri(siteUri, customRelativeUri);
 
-                return ApplyTrailingSlash(absoluteUri.AbsoluteUri);
-            }
-
-            return null;
+            return ApplyTrailingSlash(absoluteUri.AbsoluteUri);
         }
 
         private PageData GetMirroredTarget(PageData currentPage, CultureInfo contentLanguage)
