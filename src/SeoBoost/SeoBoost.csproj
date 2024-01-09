@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-
-	<TargetFramework>net5.0</TargetFramework>
+	<TargetFramework>net6.0</TargetFramework>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	<PackageId>SeoBoost</PackageId>
 	<Title>SeoBoost</Title>
@@ -17,8 +17,6 @@
 	<PackageReleaseNotes>https://github.com/adnanzameer/SEOBOOST/blob/master/CHANGELOG.md</PackageReleaseNotes>
 	<PackageTags>seo hreflang alternate links canonical tag breadcrumbs robots.txt internationalization</PackageTags>
 	<RepositoryUrl>https://github.com/adnanzameer/SEOBOOST.git</RepositoryUrl>
-
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -33,13 +31,13 @@
 	<None Include="msbuild\Main.proj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\..\images\icon.png">
-			<Pack>true</Pack>
-			<PackagePath>\</PackagePath>
-			<Link>icon.png</Link>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+	<None Include="..\..\images\icon.png">
+	  <Pack>true</Pack>
+	  <PackagePath>\</PackagePath>
+	  <Link>icon.png</Link>
+	</None>
+  </ItemGroup>
 
   <Import Project="msbuild\Main.proj" />
 

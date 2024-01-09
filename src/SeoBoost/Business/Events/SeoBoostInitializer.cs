@@ -1,27 +1,28 @@
 ﻿using System.Linq;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.Framework;
+using EPiServer.Framework.Initialization;
 using EPiServer.Globalization;
+using EPiServer.ServiceLocation;
 using SeoBoost.Models.Pages;
 
 namespace SeoBoost.Business.Events
 {
-    public class SeoBoostInitializer
+    [InitializableModule]
+    [ModuleDependency(typeof(EPiServer.Web.InitializationModule))]
+    public class SeoBoostInitializer : IInitializableModule
     {
-        private readonly IContentEvents _contentEvents;
-        private readonly IContentLoader _contentLoader;
+        private IContentLoader _contentLoader;
 
-        public SeoBoostInitializer(IContentEvents contentEvents, IContentLoader contentLoader)
+        public void Initialize(InitializationEngine context)
         {
-            _contentEvents = contentEvents;
-            _contentLoader = contentLoader;
-        }
-        public void Initialize()
-        {
-            _contentEvents.CreatingContent += ContentEvents_CreatingContent;
-            _contentEvents.PublishingContent += Instance_PublishingPage;
-            _contentEvents.MovingContent += ContentEvents_MovingContent;
+            _contentLoader = context.Locate.Advanced.GetInstance<IContentLoader>();
 
+            var events = context.Locate.ContentEvents();
+            events.CreatingContent += ContentEvents_CreatingContent;
+            events.PublishingContent += Instance_PublishingPage;
+            events.MovingContent += ContentEvents_MovingContent;
         }
 
         private void Instance_PublishingPage(object sender, ContentEventArgs e)
@@ -86,6 +87,15 @@ namespace SeoBoost.Business.Events
 
             e.CancelReason = "robots.txt page can only be created under site start page";
             e.CancelAction = true;
+        }
+
+        public void Uninitialize(InitializationEngine context)
+        {
+            var events = context.Locate.ContentEvents();
+
+            events.CreatingContent -= ContentEvents_CreatingContent;
+            events.PublishingContent -= Instance_PublishingPage;
+            events.MovingContent -= ContentEvents_MovingContent;
         }
     }
 }

@@ -4,6 +4,7 @@ using EPiServer.Cms.UI.AspNetIdentity;
 using EPiServer.Scheduler;
 using EPiServer.Web.Routing;
 using SeoBoost.Business.Configuration;
+using SeoBoost.Business.Initialization;
 
 namespace Alloy;
 
@@ -34,6 +35,8 @@ public class Startup
 
         // Required by Wangkanai.Detection
         services.AddDetection();
+        
+        services.AddRazorPages();
 
         services.AddSeoBoost(x =>
         {
@@ -72,6 +75,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
+            //endpoints.MapRazorPages();
             endpoints.MapContent();
         });
     }

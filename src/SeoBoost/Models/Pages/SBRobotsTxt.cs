@@ -4,6 +4,7 @@ using EPiServer.Core;
 using EPiServer.DataAbstraction;
 using EPiServer.DataAnnotations;
 using EPiServer.Web;
+using SeoBoost.Extensions;
 
 namespace SeoBoost.Models.Pages
 {
@@ -23,7 +24,7 @@ namespace SeoBoost.Models.Pages
 
             PageName = "Robots.txt";
             VisibleInMenu = false;
-            RobotsContent = "User-agent: *" + Environment.NewLine + "Disallow: /episerver";
+            RobotsContent = SeoBoostExtensions.GetDefaultRobotsContent();
         }
     }
 }

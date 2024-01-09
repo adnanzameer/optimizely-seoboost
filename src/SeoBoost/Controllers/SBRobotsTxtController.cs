@@ -31,8 +31,6 @@ namespace SeoBoost.Controllers
                 var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage, 
                     new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) });
 
-                //Response.Headers.CacheControl = "public, max-age=300";
-
                 var content = SeoBoostExtensions.GetDefaultRobotsContent();
                 if (items != null)
                 {
@@ -43,6 +41,8 @@ namespace SeoBoost.Controllers
                         content = robotTxtPages.First().RobotsContent;
                     }
                 }
+
+                Response.Headers.CacheControl = "public, max-age=300";
 
                 return new ContentResult
                 {
@@ -57,7 +57,5 @@ namespace SeoBoost.Controllers
                 throw;
             }
         }
-
-
     }
 }
