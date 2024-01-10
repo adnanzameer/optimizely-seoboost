@@ -39,6 +39,7 @@ public class Startup
         {
             x.CustomCanonicalTagFieldName = "CanonicalTag";
             x.UseSimpleAddressAsPath = true;
+            x.EnableRobotsTxtSupport = true;
         });
 
         services.AddSession(options =>
@@ -70,6 +71,8 @@ public class Startup
         app.UseAuthentication();
         app.UseAuthorization();
 
+
+        //app.UseEndpoints(endpoints => { endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}"); });
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapDefaultControllerRoute();

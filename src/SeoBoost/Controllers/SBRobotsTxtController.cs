@@ -22,13 +22,13 @@ namespace SeoBoost.Controllers
         }
 
         [HttpGet]
-        [Route("robots.txt")]
+        [RobotsTxtRoute]
         [AllowAnonymous]
         public IActionResult Index()
         {
             try
             {
-                var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage, 
+                var items = _contentLoader.GetChildren<SBRobotsTxt>(ContentReference.StartPage,
                     new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) });
 
                 var content = SeoBoostExtensions.GetDefaultRobotsContent();

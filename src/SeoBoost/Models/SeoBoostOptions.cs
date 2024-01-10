@@ -4,7 +4,7 @@
     {
         public bool UseSimpleAddressAsPath { get; set; } = false;
         public bool UseMirrorPageReference { get; set; } = true;
-        public bool EnableRobotsFileSupport { get; set; } = false;
+        public bool EnableRobotsTxtSupport { get; set; } = false;
         public bool UseSiteUrlAsHost { get; set; } = false;
         public string CustomCanonicalTagFieldName { get; set; } = "";
     }

@@ -3,7 +3,6 @@ using EPiServer.ServiceLocation;
 using EPiServer.Web.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SeoBoost.Business.Events;
 using SeoBoost.Business.Initialization;
 using SeoBoost.Business.Url;
 using SeoBoost.Helper.AlternateLinks;
