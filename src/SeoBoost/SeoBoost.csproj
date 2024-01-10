@@ -17,6 +17,7 @@
 	<PackageReleaseNotes>https://github.com/adnanzameer/SEOBOOST/blob/master/CHANGELOG.md</PackageReleaseNotes>
 	<PackageTags>seo hreflang alternate links canonical tag breadcrumbs robots.txt internationalization</PackageTags>
 	<RepositoryUrl>https://github.com/adnanzameer/SEOBOOST.git</RepositoryUrl>
+	<StaticWebAssetBasePath>/_content/</StaticWebAssetBasePath>
   </PropertyGroup>
   <ItemGroup>
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -37,6 +38,10 @@
 	  <PackagePath>\</PackagePath>
 	  <Link>icon.png</Link>
 	</None>
+  </ItemGroup>
+
+  <ItemGroup>
+	<Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <Import Project="msbuild\Main.proj" />
