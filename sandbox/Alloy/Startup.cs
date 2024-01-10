@@ -37,9 +37,11 @@ public class Startup
         
         services.AddSeoBoost(x =>
         {
-            x.CustomCanonicalTagFieldName = "CanonicalTag";
-            x.UseSimpleAddressAsPath = true;
-            x.EnableRobotsTxtSupport = true;
+            x.CustomCanonicalTagFieldName = "CanonicalTag"; // Default fa
+            x.UseSimpleAddressAsPath = true; // Default false
+            x.EnableRobotsTxtSupport = true; // Default false
+            x.UseMirrorPageReference = true; // Default false
+            x.UseSiteUrlAsHost = true; // Default false
         });
 
         services.AddSession(options =>

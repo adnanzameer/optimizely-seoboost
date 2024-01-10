@@ -82,29 +82,26 @@ namespace SeoBoost.Business.Url
 
             var hostLanguage = string.Empty;
 
+            var siteDefinition = _siteDefinitionResolver.GetByContent(pageData.ContentLink, true, true);
+
+            var hosts = siteDefinition.GetHosts(contentLanguage, true).ToList();
+
+            var host = hosts.FirstOrDefault(h => h.Language != null && h.Language.Equals(contentLanguage));
+
             if (!_configuration.UseSiteUrlAsHost)
             {
-                var siteDefinition = _siteDefinitionResolver.GetByContent(pageData.ContentLink, true, true);
+                host ??= hosts.FirstOrDefault(h => h.Type == HostDefinitionType.Primary);
+            }
 
-                var hosts = siteDefinition.GetHosts(contentLanguage, true).ToList();
+            baseUri = siteDefinition.SiteUrl;
 
-                var host = hosts.FirstOrDefault(h => h.Language != null && h.Language.Equals(contentLanguage));
+            if (host != null && host.Name.Equals("*") == false)
+            {
+                Uri.TryCreate(siteDefinition.SiteUrl.Scheme + "://" + host.Name, UriKind.Absolute, out baseUri);
 
-                if (!_configuration.UseSiteUrlAsHost)
+                if (host.Language != null)
                 {
-                    host ??= hosts.FirstOrDefault(h => h.Type == HostDefinitionType.Primary);
-                }
-
-                baseUri = siteDefinition.SiteUrl;
-
-                if (host != null && host.Name.Equals("*") == false)
-                {
-                    Uri.TryCreate(siteDefinition.SiteUrl.Scheme + "://" + host.Name, UriKind.Absolute, out baseUri);
-
-                    if (host.Language != null)
-                    {
-                        hostLanguage = "/" + host.Language.Name.ToLower() + "/";
-                    }
+                    hostLanguage = "/" + host.Language.Name.ToLower() + "/";
                 }
             }
 

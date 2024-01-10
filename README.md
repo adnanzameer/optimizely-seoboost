@@ -1,129 +1,209 @@
 # SEOBOOST for Optimizely
 
+The **SEOBOOST for Optimizely** is a freely available module. If you find it beneficial, you can show your support by treating me to a coffee on [Ko-fi](https://ko-fi.com/U7U2STV29):
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U2STV29)
+
 ## Description
-This package facilitates developers and editors to improve the SEO ranking of the website by utilizing helper methods & features provided.
-
-## Features
-The package provides the following helper methods & features:
-* robots.txt
-* Canonical Link 
-* Alternate Links (hreflang attributes)
-* Breadcrumbs items
-
-## How to get started?
-Install NuGet package from Optimizely NuGet Feed:
-
-
-[![Platform](https://img.shields.io/badge/Platform-.NET%205.0-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
+[![Platform](https://img.shields.io/badge/Platform-.NET%206-blue.svg?style=flat)](https://docs.microsoft.com/en-us/dotnet/)
+[![Platform](https://img.shields.io/badge/Optimizely-%2012-blue.svg?style=flat)](http://world.episerver.com/cms/)
 [![Platform](https://img.shields.io/badge/EPiServer-%2012-orange.svg?style=flat)](http://world.episerver.com/cms/)
 
-### .NET Core (.NET 5.0)
+This package empowers developers and editors to enhance the website's SEO ranking through the utilization of helpful methods and features it offers.
 
+## Features
 
-Start by installing NuGet package (use [Optimizely NuGet](https://nuget.optimizely.com/)):
+* **robots.txt:** Editors can manage the robots.txt file seamlessly through the SBRobotsTxt pagetype.
+
+* **Canonical Link:** It provides support for a Custom canonical tag in the CMS (if any), partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut), multi-site & multi domain support, and automatic handling of trailing slashes.
+
+* **Alternate Links (hreflang attributes):** Similar to Canonical Link support, it includes features such as Custom canonical tags in the CMS, partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut),  multi-site & multi domain support, and automatic trailing slash handling.
+
+* **Breadcrumbs item:** This feature aids in the administration of breadcrumb items, contributing to an enhanced navigational experience.
+
+## Installation
+To install the SEOBOOST, begin by adding the NuGet package using [Optimizely NuGet](https://nuget.optimizely.com/):
 
 ```
 dotnet add package SeoBoost
 ```
 
-Register SEOBOOST in Startup.cs using folllowing service extension 
+## Configuration
 
-```csharp
-services.AddSeoBoost();
+Add the SEOBOOST handler in the Startup.cs within the ConfigureServices method. Here's an example with all available configurations:
+
+```C#
+public void ConfigureServices(IServiceCollection services)
+{
+    
+    services.AddSeoBoost(x =>
+    {
+        x.CustomCanonicalTagFieldName = "CanonicalTag"; // Default ""
+        x.UseSimpleAddressAsPath = true; // Default false
+        x.EnableRobotsTxtSupport = true; // Default false
+        x.UseMirrorPageReference = true; // Default true
+        x.UseSiteUrlAsHost = true; // Default false
+    });
+
+    OR
+
+    services.AddSeoBoost();
+    
+...
+}
 ```
 
-Then, call `UseSeoBoost` in the `Configure` method:
+Ensure that one of these is called in the **Configure** method to enable the **/robots.txt** route to function properly.
 
-```csharp
-app.UseSeoBoost();
+
+```C#
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
+OR
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapDefaultControllerRoute();
+});
+
+OR
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 ```
 
-Register custom route if `robots.txt` not working in the URL
-```csharp
-        app.UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllerRoute(
-                name: "robots",
-                pattern: "robots.txt",
-                defaults: new { controller = "SBRobotsTxt", action = "Index" });
-        });
+In addition, the configuration can be read from the `appsettings.json`:
+
+```Json
+"SeoBoost": {
+    "CustomCanonicalTagFieldName":  "CanonicalTag", // Default "", 
+    "UseSimpleAddressAsPath": true, // Default false
+    "EnableRobotsTxtSupport": true, // Default false,
+    "UseMirrorPageReference": true, // Default true,
+    "UseSiteUrlAsHost": true, // Default false,
+}
 ```
 
-[![Platform](https://img.shields.io/badge/Platform-.NET%204.6.1-blue.svg?style=flat)](https://msdn.microsoft.com/en-us/library/w0x726c2%28v=vs.110%29.aspx)
-[![Platform](https://img.shields.io/badge/Episerver-%2011.0.+-orange.svg?style=flat)](http://world.episerver.com/cms/)
+The settings specified in the `appsettings.json` file will take precedence over any configurations defined in the Startup.
 
-### .NET Framework (4.7.1)
+### SEOBOOST Options Details
 
-Install NuGet package from Optimizely NuGet Feed:
+* #### CustomCanonicalTagFieldName
 
-```
-    Install-Package SeoBoost
-```
-	
-## How to use
+    The custom canonical field within a Content Management System (CMS) simplifies the responsibilities of editors in overseeing SEO-related elements. The **CustomCanonicalTagFieldName** field empowers developers to specify the property name for SEOBOOST. This enables the code to retrieve the property value and, if provided, use it to generate a URL for canonical or alternative links.
 
-Include the follow **@using SeoBoost.Helper** at top of the Mater page.
-     
+* #### UseSimpleAddressAsPath
+
+    If a Simple Address or Short URL is supplied for the page in CMS, and the **UseSimpleAddressAsPath** option is configured as **true**, the URL generated for canonical or alternative links will incorporate that address.
+
+* #### UseMirrorPageReference
+
+    If Page shortcuts on the shortcut property (Fetchdata, Internal shortcut) are configured, this option ensures that the URL generated for canonical or alternative links will include the value of the page whose shortcut has been used. This helps in preventing duplicate content issues.
+
+* #### UseSiteUrlAsHost
+
+    The default behavior is for the host part of the URL to be generated based on the primary hostname set in site settings. However, this option ensures that the site URL property is used instead of the primary hostname.
+
+* #### EnableRobotsTxtSupport
+
+    Enabling this option will activate support for the **robots.txt** file in the CMS, making a **robots.txt** page type available to editors and establishing the **/robots.txt** route.
+
+## How to Use
+
+Include the following at the top of the master page.
+
+``` C# 
+@using SeoBoost.Extensions 
+``` 
+    
 ### Canonical link
-Use the following extension **@Html.GetCanonicalLink()** within **<head></head>** section.
-     
+Incorporate the following extension within the <**head**> section
+
+``` C# 
+@Html.GetCanonicalLink() 
+``` 
+
 ### Alternate links (hreflang attributes)
-Use the following extension **@Html.GetAlternateLinks()** within **<head></head>** section.
+Incorporate the following extension within the <**head**> section
+
+``` C# 
+@Html.GetAlternateLinks() 
+``` 
 
 ### Breadcrumbs items
-Use the following extension **@Html.GetBreadcrumbItemList()** where required.
+Use the following extension where required.
+
+``` C# 
+@Html.GetBreadcrumbItemList() 
+``` 
 
 Example:
-                    
-       @{ var breadCrumbList = Html.GetBreadcrumbItemList(ContentReference.StartPage); }
 
-       <ol class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
-            @{
-                foreach (var item in breadCrumbList)
-                {
-                    if (item.Selected)
-                    {
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="active">
-                            <span itemprop="name">@item.PageData.PageName</span>
-                            <meta content="@item.Position" itemprop="position">
-                        </li>
-                    }
-                    else if (item.PageData.HasTemplate() && !item.PageData.ContentLink.CompareToIgnoreWorkID(CURRENTPAGE.ContentLink))
-                    {
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <a href="@Url.ContentUrl(item.PageData.ContentLink)" itemprop="item" itemscope itemtype="http://schema.org/Thing">
-                                <span itemprop="name">@item.PageData.PageName</span>
-                            </a>
-                            <meta content="@item.Position" itemprop="position">
-                        </li>
-                    }
-                    else //OPTIONAL
-                    {
-                        <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
-                            <span itemprop="name">@item.PageData.PageName</span>
-                            <meta content="@item.Position" itemprop="position">
-                        </li>
-                    }
-                    <span class="divider">/</span>
-                }
+ ``` C#                    
+@{var breadCrumbList = SeoBoost.Extensions.BreadcrumbExtensions.GetBreadcrumbItemList(Model.CurrentPage);}
+
+<ol class="breadcrumbs" itemscope itemtype="http://schema.org/BreadcrumbList">
+    @{
+        foreach (var item in breadCrumbList)
+        {
+            if (item.Selected)
+            {
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="active">
+                    <span itemprop="name">@item.PageData.PageName</span>
+                    <meta content="@item.Position" itemprop="position">
+                </li>
             }
-        </ol> 
-       
+            else if (item.PageData.HasTemplate() && !item.PageData.ContentLink.CompareToIgnoreWorkID(CURRENTPAGE.ContentLink))
+            {
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <a href="@Url.ContentUrl(item.PageData.ContentLink)" itemprop="item" itemscope itemtype="http://schema.org/Thing">
+                        <span itemprop="name">@item.PageData.PageName</span>
+                    </a>
+                    <meta content="@item.Position" itemprop="position">
+                </li>
+            }
+            else //OPTIONAL
+            {
+                <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+                    <span itemprop="name">@item.PageData.PageName</span>
+                    <meta content="@item.Position" itemprop="position">
+                </li>
+            }
+            <span class="divider">/</span>
+        }
+    }
+</ol> 
+``` 
+
 ### robots.txt
 
-The idea behind this feature is simple, provide editors with the flexibility to change robots.txt file on the go. 
+The concept behind this feature is straightforward: to offer editors the flexibility to modify the robots.txt file seamlessly.
 
-The Robots.txt page (backed by SBRobotsTxt PageType) should be created by the editor for the site under Start Page. 
+Editors can achieve this by creating a Robots.txt page, supported by the SBRobotsTxt PageType, under the Start Page for the respective site.
 
-![robots.txt PageType](assets/docsimages/image001.png)
+![robots.txt PageType](assets/docsimages/page-type.png)
 
-The physical rebots.txt file content (if any) will be replaced with the CMS robobts.txt page content. The fallback behaviour of /robots.txt URL is the content of physical rebots.txt file (if any) otherwise the default 404 error page will be shown.
+![robots.txt Page](assets/docsimages/image001.png)
 
-**IMPORTANT**: 
-* If there is a physical robot.txt exist in the site root, always purged the CDN cache after the deploy or site restart. It is a recommendation to delete physical robots.txt file from the site root to ensure editable robot.txt content loads without a problem.
-* If you are using IIS URL Rewrite rules to add a trailing slash at the end of the URL, add the following in the rule to ignore robots.txt route 
-    
-        <add input="{URL}" pattern="\robots.txt" negate="true" />
+It is advisable to consider deleting any existing physical robots.txt file in the site root or wwwroot. Additionally, it is recommended to consistently purge the CDN cache after deploying or restarting the site. This practice ensures that the editable robots.txt content loads seamlessly from the route without encountering any issues.
+
+To enable the functionality of robots.txt, editors must activate the **EnableRobotsTxtSupport** in strtup.cs
+
+```C#
+public void ConfigureServices(IServiceCollection services)
+{    
+    services.AddSeoBoost(x =>
+    {        
+        x.EnableRobotsTxtSupport = true;     
+    });
+}
+```
 
 ### Additional helper methods
 
@@ -131,14 +211,16 @@ There are some helper methods in the package to get external URLs of the page. T
 
 usage 
 
-      var urlHelper = ServiceLocator.Current.GetInstance<SeoBoost.Business.Url.IUrlService>();
+``` C#   
+    var urlHelper = ServiceLocator.Current.GetInstance<SeoBoost.Business.Url.IUrlService>();
+```
 
+There are two methods available to get external URL for the content 
 
-There are three methods available to get external URL for the content 
-
-       string GetExternalUrl(ContentReference contentReference);
-       string GetExternalFriendlyUrl(ContentReference contentReference, string culture);
-       string GetExternalFriendlyUrl(ContentReference contentReference);
+``` C#  
+    string GetExternalUrl(ContentReference contentReference, CultureInfo culture);
+    string GetExternalUrl(ContentReference contentReference);
+```
 
 ## Changelog
 
