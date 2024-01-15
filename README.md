@@ -94,25 +94,25 @@ The settings specified in the `appsettings.json` file will take precedence over 
 
 ### SEOBOOST Options Details
 
-* #### CustomCanonicalTagFieldName
+#### 1. CustomCanonicalTagFieldName
 
-    The custom canonical field within a Content Management System (CMS) simplifies the responsibilities of editors in overseeing SEO-related elements. The **CustomCanonicalTagFieldName** field empowers developers to specify the property name for SEOBOOST. This enables the code to retrieve the property value and, if provided, use it to generate a URL for canonical or alternative links.
+The custom canonical field within a Content Management System (CMS) simplifies the responsibilities of editors in overseeing SEO-related elements. The **CustomCanonicalTagFieldName** field empowers developers to specify the property name for SEOBOOST. This enables the code to retrieve the property value and, if provided, use it to generate a URL for canonical or alternative links.
 
-* #### UseSimpleAddressAsPath
+#### 2. UseSimpleAddressAsPath
 
-    If a Simple Address or Short URL is supplied for the page in CMS, and the **UseSimpleAddressAsPath** option is configured as **true**, the URL generated for canonical or alternative links will incorporate that address.
+If a Simple Address or Short URL is supplied for the page in CMS, and the **UseSimpleAddressAsPath** option is configured as **true**, the URL generated for canonical or alternative links will incorporate that address.
 
-* #### UseMirrorPageReference
+#### 3. UseMirrorPageReference
 
-    If Page shortcuts on the shortcut property (Fetchdata, Internal shortcut) are configured, this option ensures that the URL generated for canonical or alternative links will include the value of the page whose shortcut has been used. This helps in preventing duplicate content issues.
+If Page shortcuts on the shortcut property (Fetchdata, Internal shortcut) are configured, this option ensures that the URL generated for canonical or alternative links will include the value of the page whose shortcut has been used. This helps in preventing duplicate content issues.
 
-* #### UseSiteUrlAsHost
+#### 4. UseSiteUrlAsHost
 
-    The default behavior is for the host part of the URL to be generated based on the primary hostname set in site settings. However, this option ensures that the site URL property is used instead of the primary hostname.
+The default behavior is for the host part of the URL to be generated based on the primary hostname set in site settings. However, this option ensures that the site URL property is used instead of the primary hostname.
 
-* #### EnableRobotsTxtSupport
+#### 5. EnableRobotsTxtSupport
 
-    Enabling this option will activate support for the **robots.txt** file in the CMS, making a **robots.txt** page type available to editors and establishing the **/robots.txt** route.
+Enabling this option will activate support for the **robots.txt** file in the CMS, making a **robots.txt** page type available to editors and establishing the **/robots.txt** route.
 
 ## How to Use
 
@@ -136,7 +136,7 @@ Incorporate the following extension within the <**head**> section
 @Html.GetAlternateLinks() 
 ``` 
 
-### Breadcrumbs items
+### Breadcrumbs Items
 Use the following extension where required.
 
 ``` C# 
@@ -181,6 +181,17 @@ Example:
 </ol> 
 ``` 
 
+### Trailing Slash Support
+
+SEOBOOST provides support for trailing slashes in Canonical and Alternate links (hreflang attributes) by listening to the following routing option in the Configure method.
+
+ ``` C#   
+services.Configure<RoutingOptions>(options =>
+{
+    options.UseTrailingSlash = false;
+});
+ ```
+
 ### robots.txt
 
 The concept behind this feature is straightforward: to offer editors the flexibility to modify the robots.txt file seamlessly.
@@ -221,6 +232,27 @@ There are two methods available to get external URL for the content
     string GetExternalUrl(ContentReference contentReference, CultureInfo culture);
     string GetExternalUrl(ContentReference contentReference);
 ```
+
+## Sandbox App
+Sandbox application is testing poligon for pacakge new features and bug fixes.
+
+**ADMIN**
+
+Username: admin
+Username: sysadmin
+
+Password: Sandbox#123
+
+## Contributing
+
+If you can help please do so by contributing to the package! Reach out package maintainer for additional details if needed.
+
+
+## Feature requests
+
+If you have new ideas or feature requests that can make this tool even more useful for you or the community, please feel free to open a new issue at the following link.
+
+https://github.com/adnanzameer/optimizely-seoboost/issues
 
 ## Changelog
 
