@@ -136,7 +136,7 @@ Incorporate the following extension within the <**head**> section
 @Html.GetAlternateLinks() 
 ``` 
 
-### Breadcrumbs Items
+### Breadcrumbs items
 Use the following extension where required.
 
 ``` C# 
@@ -216,7 +216,7 @@ public void ConfigureServices(IServiceCollection services)
 }
 ```
 
-### Additional helper methods
+### Additional Helper Methods
 
 There are some helper methods in the package to get external URLs of the page. The developer can use these methods for their implementations 
 
@@ -248,7 +248,7 @@ Password: **Sandbox#123**
 
 If you can help please do so by contributing to the package! Reach out package maintainer for additional details if needed.
 
-## Feature requests
+## Feature Requests
 
 If you have new ideas or feature requests that can make this tool even more useful for you or the community, please feel free to open a new issue at the following link.
 
@@ -257,7 +257,7 @@ https://github.com/adnanzameer/optimizely-seoboost/issues
 
 ## Optimizely (Episerver) CMS 11 Support
 
-Visit the repository: [SEOBOOST Version 1 on GitHub](https://github.com/adnanzameer/SEOBOOST)
+For users still on Optimizely (Episerver) CMS 11, SEOBOOST is available on: https://github.com/adnanzameer/SEOBOOST
 
 ## Changelog
 
