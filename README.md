@@ -238,21 +238,26 @@ Sandbox application is testing poligon for pacakge new features and bug fixes.
 
 **ADMIN**
 
-Username: admin
-Username: sysadmin
+Username: **admin**
 
-Password: Sandbox#123
+Username: **sysadmin**
+
+Password: **Sandbox#123**
 
 ## Contributing
 
 If you can help please do so by contributing to the package! Reach out package maintainer for additional details if needed.
-
 
 ## Feature requests
 
 If you have new ideas or feature requests that can make this tool even more useful for you or the community, please feel free to open a new issue at the following link.
 
 https://github.com/adnanzameer/optimizely-seoboost/issues
+
+
+## Optimizely (Episerver) CMS 11 Support
+
+Visit the repository: [SEOBOOST Version 1 on GitHub](https://github.com/adnanzameer/SEOBOOST)
 
 ## Changelog
 
