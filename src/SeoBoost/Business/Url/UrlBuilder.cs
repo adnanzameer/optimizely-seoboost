@@ -6,6 +6,7 @@ using EPiServer.Core;
 using EPiServer.Globalization;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
+using EPiServer.Web.Routing.Matching;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using SeoBoost.Models;
@@ -33,7 +34,7 @@ namespace SeoBoost.Business.Url
         public string ContentExternalUrl(ContentReference contentLink, CultureInfo contentLanguage)
         {
             //Partial Router check
-            var result = PartialRouterCheck(contentLink, contentLanguage);
+            var result = PartialRouterCheck(contentLanguage);
 
             var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(contentLanguage) };
 
@@ -78,8 +79,6 @@ namespace SeoBoost.Business.Url
             if (relativeUri.IsAbsoluteUri)
                 return ApplyTrailingSlash(result);
 
-            Uri baseUri = null;
-
             var hostLanguage = string.Empty;
 
             var siteDefinition = _siteDefinitionResolver.GetByContent(pageData.ContentLink, true, true);
@@ -93,7 +92,7 @@ namespace SeoBoost.Business.Url
                 host ??= hosts.FirstOrDefault(h => h.Type == HostDefinitionType.Primary);
             }
 
-            baseUri = siteDefinition.SiteUrl;
+            var baseUri = siteDefinition.SiteUrl;
 
             if (host != null && host.Name.Equals("*") == false)
             {
@@ -189,14 +188,21 @@ namespace SeoBoost.Business.Url
         }
 
 
-        private string PartialRouterCheck(ContentReference contentLink, CultureInfo contentLanguage)
+        private string PartialRouterCheck(CultureInfo contentLanguage)
         {
             if (_contextAccessor.HttpContext == null)
             {
                 return string.Empty;
             }
 
-            var pageLanguages = _contentRepository.GetLanguageBranches<PageData>(contentLink);
+            var partialRoutedObject = _contextAccessor.HttpContext.Features.Get<IContentRouteFeature>()
+                ?.RoutedContentData
+                .PartialRoutedObject;
+            
+            if (partialRoutedObject == null)
+            {
+                return string.Empty;
+            }
 
             var currentUrl = _contextAccessor.HttpContext.Request.Path;
 
@@ -212,27 +218,14 @@ namespace SeoBoost.Business.Url
                 return string.Empty;
             }
 
-            foreach (var pageData in pageLanguages)
+            var currentCulture = ContentLanguage.PreferredCulture;
+            if (!currentCulture.Name.Equals(contentLanguage.Name, StringComparison.InvariantCultureIgnoreCase))
             {
-                var pageUrl = _urlResolver.GetUrl(
-                    pageData.ContentLink,
-                    pageData.Language.Name,
-                    new VirtualPathArguments
-                    {
-                        ContextMode = ContextMode.Default,
-                        ForceCanonical = true
-                    });
-
-                if (pageUrl.Equals(currentUrl.Value, StringComparison.CurrentCultureIgnoreCase) ||
-                    (!string.IsNullOrEmpty(pageData.ExternalURL) && pageData.ExternalURL.Equals(currentUrl.Value, StringComparison.CurrentCultureIgnoreCase)))
-                {
-                    return string.Empty;
-                }
+                var url = currentUrl.Value.ToLower().Replace("/" + currentCulture.Name.ToLower() + "/", "/" + contentLanguage.Name.ToLower() + "/");
+                return url;
             }
 
-            var currentCulture = ContentLanguage.PreferredCulture;
-            var url = currentUrl.Value.Replace("/" + currentCulture.Name.ToLower() + "/", "/" + contentLanguage.Name.ToLower() + "/");
-            return url;
+            return currentUrl.Value;
         }
     }
 }
