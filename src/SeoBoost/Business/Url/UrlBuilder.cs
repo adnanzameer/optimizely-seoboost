@@ -225,7 +225,7 @@ namespace SeoBoost.Business.Url
                 return url;
             }
 
-            return currentUrl.Value;
+            return currentUrl.Value.ToLower();
         }
     }
 }
