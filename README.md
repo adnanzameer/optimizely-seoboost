@@ -1,9 +1,5 @@
 # SEOBOOST for Optimizely
 
-The **SEOBOOST for Optimizely** is a freely available module. If you find it beneficial, you can show your support by treating me to a coffee on [Ko-fi](https://ko-fi.com/U7U2STV29):
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/U7U2STV29)
-
 ## Description
 [![Platform](https://img.shields.io/badge/Platform-.NET%206-blue.svg?style=flat)](https://docs.microsoft.com/en-us/dotnet/)
 [![Platform](https://img.shields.io/badge/Optimizely-%2012-blue.svg?style=flat)](http://world.episerver.com/cms/)
@@ -15,9 +11,9 @@ This package empowers developers and editors to enhance the website's SEO rankin
 
 * **robots.txt:** Editors can manage the robots.txt file seamlessly through the SBRobotsTxt pagetype.
 
-* **Canonical Link:** It provides support for a Custom canonical tag in the CMS (if any), partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut), multi-site & multi domain support, and automatic handling of trailing slashes.
+* **Canonical Link:** It provides support for a Custom canonical tag in the CMS (if any), partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut), multi-site & multi-domain support, and automatic handling of trailing slashes.
 
-* **Alternate Links (hreflang attributes):** Similar to Canonical Link support, it includes features such as Custom canonical tags in the CMS, partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut),  multi-site & multi domain support, and automatic trailing slash handling.
+* **Alternate Links (hreflang attributes):** Similar to Canonical Link support, it includes features such as Custom canonical tags in the CMS, partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut),  multi-site & multi-domain support, and automatic trailing slash handling.
 
 * **Breadcrumbs item:** This feature aids in the administration of breadcrumb items, contributing to an enhanced navigational experience.
 
@@ -226,7 +222,7 @@ usage
     var urlHelper = ServiceLocator.Current.GetInstance<SeoBoost.Business.Url.IUrlService>();
 ```
 
-There are two methods available to get external URL for the content 
+There are two methods available to get external URLs for the content 
 
 ``` C#  
     string GetExternalUrl(ContentReference contentReference, CultureInfo culture);
@@ -234,7 +230,7 @@ There are two methods available to get external URL for the content
 ```
 
 ## Sandbox App
-Sandbox application is testing poligon for pacakge new features and bug fixes.
+Sandbox application is testing poligon for package new features and bug fixes.
 
 **ADMIN**
 
