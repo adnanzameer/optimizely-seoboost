@@ -1,14 +1,20 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Reflection;
 using EPiServer;
 using EPiServer.Core;
+using EPiServer.Core.Routing;
 using EPiServer.Globalization;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
 using EPiServer.Web.Routing.Matching;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
+using SeoBoost.Business.Attributes;
+using SeoBoost.Helper;
 using SeoBoost.Models;
 
 namespace SeoBoost.Business.Url
@@ -33,6 +39,18 @@ namespace SeoBoost.Business.Url
 
         public string ContentExternalUrl(ContentReference contentLink, CultureInfo contentLanguage)
         {
+            if (!string.IsNullOrEmpty(_configuration.CustomCanonicalTagFieldName))
+            {
+                var dynamicCanonicalLink = HttpContextUtility.GetItem(_contextAccessor.HttpContext, _configuration.CustomCanonicalTagFieldName);
+
+                if (!string.IsNullOrEmpty(dynamicCanonicalLink))
+                {
+                    var customCanonicalUrl = GetCustomCanonicalUrl(dynamicCanonicalLink);
+                    if (!string.IsNullOrEmpty(customCanonicalUrl))
+                        return customCanonicalUrl;
+                }
+            }
+
             //Partial Router check
             var result = PartialRouterCheck(contentLanguage);
 
@@ -149,6 +167,27 @@ namespace SeoBoost.Business.Url
             return ApplyTrailingSlash(absoluteUri.AbsoluteUri);
         }
 
+        private string GetCustomCanonicalUrl(string dynamicCanonicalUrl)
+        {
+            if (string.IsNullOrEmpty(_configuration.CustomCanonicalTagFieldName))
+                return null;
+
+            if (string.IsNullOrEmpty(dynamicCanonicalUrl))
+                return null;
+
+            if (!Uri.TryCreate(dynamicCanonicalUrl, UriKind.RelativeOrAbsolute, out var customRelativeUri))
+                return null;
+
+            if (customRelativeUri.IsAbsoluteUri)
+                return ApplyTrailingSlash(dynamicCanonicalUrl);
+
+            var siteUri = new Uri(SiteDefinition.Current.SiteUrl.AbsoluteUri);
+            var absoluteUri = new Uri(siteUri, customRelativeUri);
+
+            return ApplyTrailingSlash(absoluteUri.AbsoluteUri);
+        }
+
+
         private PageData GetMirroredTarget(PageData currentPage, CultureInfo contentLanguage)
         {
             if (IsMirrored(currentPage))
@@ -186,20 +225,18 @@ namespace SeoBoost.Business.Url
 
             return url.ToLower();
         }
-
+        
 
         private string PartialRouterCheck(CultureInfo contentLanguage)
         {
-            if (_contextAccessor.HttpContext == null)
+            if (_contextAccessor.HttpContext?.Features.Get<IContentRouteFeature>()?.RoutedContentData?.PartialRoutedObject is not PageData partialRoutedObject)
             {
                 return string.Empty;
             }
 
-            var partialRoutedObject = _contextAccessor.HttpContext.Features.Get<IContentRouteFeature>()
-                ?.RoutedContentData
-                .PartialRoutedObject;
-            
-            if (partialRoutedObject == null)
+            var hasAttribute = HasPartialRouterAttribute(partialRoutedObject.GetOriginalType());
+
+            if (!hasAttribute)
             {
                 return string.Empty;
             }
@@ -226,6 +263,11 @@ namespace SeoBoost.Business.Url
             }
 
             return currentUrl.Value.ToLower();
+        }
+
+        private static bool HasPartialRouterAttribute(Type type)
+        {
+            return type.GetCustomAttribute<PartialRouterAttribute>() != null;
         }
     }
 }

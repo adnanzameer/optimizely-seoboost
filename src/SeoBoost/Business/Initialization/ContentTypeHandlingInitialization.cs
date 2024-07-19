@@ -1,12 +1,12 @@
-﻿using EPiServer.Framework;
+﻿using System.Linq;
+using EPiServer.DataAbstraction;
+using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.ServiceLocation;
-using EPiServer.DataAbstraction;
 using EPiServer.Web;
-using SeoBoost.Models.Pages;
 using Microsoft.Extensions.Options;
 using SeoBoost.Models;
-using System.Linq;
+using SeoBoost.Models.Pages;
 
 namespace SeoBoost.Business.Initialization
 {
