@@ -1,5 +1,10 @@
 # Changelog
 
+## Changes in version 2.2.0
+
+- Added the [PartialRouter] attribute for partial router PageTypes to ensure correct canonical and alternative links.
+- Added support for dynamic canonical and alternative links from the Partial Router.
+
 ## Changes in version 2.1.0
 
 Overhaul the codebase and upgrade the framework to .NET Core 6.
