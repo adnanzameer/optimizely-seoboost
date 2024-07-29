@@ -1,8 +1,6 @@
-﻿using EPiServer.Core;
-using EPiServer.Web.Routing;
-using EPiServer.Web;
+﻿using System.Text;
 using EPiServer.ServiceLocation;
-using System.Text;
+using EPiServer.Web;
 
 namespace SeoBoost.Extensions
 {

@@ -1,9 +1,9 @@
 ﻿using EPiServer.Core;
+using EPiServer.ServiceLocation;
+using EPiServer.Web.Routing;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SeoBoost.Helper.AlternateLinks;
-using EPiServer.ServiceLocation;
-using EPiServer.Web.Routing;
 
 namespace SeoBoost.Extensions
 {

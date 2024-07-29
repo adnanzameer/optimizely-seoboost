@@ -15,6 +15,14 @@ This package empowers developers and editors to enhance the website's SEO rankin
 
 * **Alternate Links (hreflang attributes):** Similar to Canonical Link support, it includes features such as Custom canonical tags in the CMS, partial routing, Simple address, Page shortcuts (Fetchdata, Internal shortcut),  multi-site & multi-domain support, and automatic trailing slash handling.
 
+**To ensure that the canonical and alternative links are generated for the partial routing based on the dynamic content, add the following class attribute to the pagetype in the code.**
+
+``` C# 
+using SeoBoost.Business.Attributes;
+
+[PartialRouter]
+``` 
+
 * **Breadcrumbs item:** This feature aids in the administration of breadcrumb items, contributing to an enhanced navigational experience.
 
 ## Installation
@@ -93,6 +101,20 @@ The settings specified in the `appsettings.json` file will take precedence over 
 #### 1. CustomCanonicalTagFieldName
 
 The custom canonical field within a Content Management System (CMS) simplifies the responsibilities of editors in overseeing SEO-related elements. The **CustomCanonicalTagFieldName** field empowers developers to specify the property name for SEOBOOST. This enables the code to retrieve the property value and, if provided, use it to generate a URL for canonical or alternative links.
+
+Canonical and alternative links now also support dynamic canonical and alternative links generated through the **Partial Router**. To utilize this functionality, add the following code in the **RoutePartial** method.
+
+``` C#
+using SeoBoost.Helper;
+
+    HttpContextUtility.SetItem(contextAccessor.HttpContext,
+        new KeyValuePair<string, string>
+        (
+            "CanonicalLink", "HTTPS://SOMED-DYNAMIC-LINK"
+        ));
+```
+
+Note: "CanonicalLink" key is the name of the field defined in **CustomCanonicalTagFieldName** property.
 
 #### 2. UseSimpleAddressAsPath
 
