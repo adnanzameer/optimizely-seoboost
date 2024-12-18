@@ -1,17 +1,14 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using EPiServer;
 using EPiServer.Core;
-using EPiServer.Core.Routing;
 using EPiServer.Globalization;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
 using EPiServer.Web.Routing.Matching;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using SeoBoost.Business.Attributes;
 using SeoBoost.Helper;

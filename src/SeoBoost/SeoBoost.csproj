@@ -5,7 +5,7 @@
 	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	<PackageId>SeoBoost</PackageId>
 	<Title>SeoBoost</Title>
-	<version>2.2.0</version>
+	<version>2.2.1</version>
 	<Authors>Adnan Zameer</Authors>
 	<Company>Adnan Zameer</Company>
 	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

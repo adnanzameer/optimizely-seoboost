@@ -1,5 +1,8 @@
 # Changelog
 
+## Changes in version 2.2.1
+- Fixed breadcrumb hierarchy issue if the start page is not the site start page
+
 ## Changes in version 2.2.0
 
 - Added the [PartialRouter] attribute for partial router PageTypes to ensure correct canonical and alternative links.
