@@ -10,9 +10,7 @@ namespace SeoBoost.Models.ViewModels
     public class BreadcrumbsViewModel
     {
         private static readonly Injected<IContentLoader> ContentLoader;
-
         public readonly List<BreadcrumbItemListElementViewModel> BreadcrumbItemList;
-
         private int _index = 1;
 
         public BreadcrumbsViewModel(PageData currentPage, ContentReference startPageReference)
@@ -20,97 +18,79 @@ namespace SeoBoost.Models.ViewModels
             BreadcrumbItemList = GetBreadcrumbItemList(currentPage, startPageReference);
         }
 
-        private List<BreadcrumbItemListElementViewModel> GetBreadcrumbItemList(PageData currentPage, ContentReference startPageReference = null)
+        private List<BreadcrumbItemListElementViewModel> GetBreadcrumbItemList(PageData currentPage, ContentReference startPageReference)
         {
             var breadcrumbItemList = new List<BreadcrumbItemListElementViewModel>();
+            var startPage = GetStartPage(currentPage, startPageReference);
+            breadcrumbItemList.Add(GetPageBreadcrumbElement(startPage, false));
 
-            PageData startPage;
-            if (startPageReference == null || ContentReference.IsNullOrEmpty(startPageReference))
-                startPage = GetStartPage(currentPage);
-            else
-                startPage = GetPageData(startPageReference);
-
-
-            var startPageBreadcrumbElement = GetPageBreadcrumbElement(startPage, false);
-            breadcrumbItemList.Add(startPageBreadcrumbElement);
-
-            if (currentPage != startPage)
+            if (currentPage != startPage && IsChild(startPage.ContentLink, currentPage.ContentLink))
             {
-                var root = ContentReference.RootPage;
-                var parents = new List<PageData>();
-
-                GetParentBreadcrumbs(currentPage, ref parents);
-
-                parents.Reverse();
-
-                foreach (var parent in parents)
-                {
-                    if (parent.PageLink.ID == root.ID) continue;
-                    if (parent.PageLink.ID == startPage.ContentLink.ID) continue;
-
-                    breadcrumbItemList.Add(GetPageBreadcrumbElement(parent, false));
-                }
+                var parents = GetParentBreadcrumbs(startPage, currentPage).Reverse().ToList();
+                breadcrumbItemList.AddRange(parents.Select(parent => GetPageBreadcrumbElement(parent, false)));
                 breadcrumbItemList.Add(GetPageBreadcrumbElement(currentPage, true));
             }
 
             return breadcrumbItemList;
         }
 
-        private static ICollection<PageData> GetParentBreadcrumbs(PageData page, ref List<PageData> parents)
+        private PageData GetStartPage(PageData currentPage, ContentReference startPageReference)
+        {
+            if (startPageReference == null || ContentReference.IsNullOrEmpty(startPageReference))
+            {
+                return !ContentReference.IsNullOrEmpty(ContentReference.StartPage) 
+                    ? GetPageData(ContentReference.StartPage) 
+                    : FindStartPage(currentPage);
+            }
+                
+            return GetPageData(startPageReference);
+        }
+
+        private PageData FindStartPage(PageData page)
         {
             var parent = GetParent(page);
+            if (parent == null || parent.PageLink.ID == ContentReference.RootPage.ID)
+                return page;
 
-            if (parent != null)
+            return FindStartPage(parent);
+        }
+
+        private IEnumerable<PageData> GetParentBreadcrumbs(PageData startPage, PageData currentPage)
+        {
+            var parents = new List<PageData>();
+            var parent = GetParent(currentPage);
+
+            while (parent != null && parent.ContentLink.ID != startPage.ContentLink.ID)
             {
                 if (parent.CheckPublishedStatus(PagePublishedStatus.Published))
                     parents.Add(parent);
 
-                return GetParentBreadcrumbs(parent, ref parents);
+                parent = GetParent(parent);
             }
 
             return parents;
         }
 
-        private static PageData GetStartPage(PageData page)
+        private static bool IsChild(ContentReference startPageReference, ContentReference currentContentReference)
         {
-            var parent = GetParent(page);
-
-            if (parent != null)
-            {
-                if (parent.CheckPublishedStatus(PagePublishedStatus.Published) &&
-                    parent.PageLink.ID == ContentReference.RootPage.ID)
-                    return page;
-
-                return GetStartPage(parent);
-            }
-
-            return GetPageData(ContentReference.StartPage);
+            var descendants = ContentLoader.Service.GetDescendents(startPageReference);
+            return descendants.Contains(currentContentReference);
         }
 
         private static PageData GetPageData(ContentReference reference)
         {
             var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };
-
-            var pageData = ContentLoader.Service.Get<IContent>(reference, loadingOptions) as PageData;
-            return pageData;
+            return ContentLoader.Service.Get<IContent>(reference, loadingOptions) as PageData;
         }
 
         private BreadcrumbItemListElementViewModel GetPageBreadcrumbElement(PageData page, bool selected)
         {
-
-            var breadcrumbCurrentPageElement = new BreadcrumbItemListElementViewModel(
+            return new BreadcrumbItemListElementViewModel(
                 page,
-                IncrementIndex(),
+                _index++,
                 selected,
                 ContentLoader.Service.GetChildren<PageData>(page.ContentLink).Any()
-                );
-
-            return breadcrumbCurrentPageElement;
-        }
-
-        private int IncrementIndex()
-        {
-            return _index++;
+            );
         }
 
         private static PageData GetParent(PageData currentPage)
@@ -119,7 +99,6 @@ namespace SeoBoost.Models.ViewModels
                 return null;
 
             var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };
-
             return ContentLoader.Service.Get<IContent>(currentPage.ParentLink, loadingOptions) as PageData;
         }
     }
