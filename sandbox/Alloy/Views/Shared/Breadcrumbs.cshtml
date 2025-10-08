@@ -26,7 +26,7 @@
             }
         }
 
-        return new HelperResult(w => Task.CompletedTask);
+        return new HelperResult(_ => Task.CompletedTask);
     }
 
     var breadCrumbList = SeoBoost.Extensions.BreadcrumbExtensions.GetBreadcrumbItemList(Model.CurrentPage);

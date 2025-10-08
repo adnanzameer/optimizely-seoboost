@@ -259,3 +259,24 @@ __pycache__/
 /Package
 **/*.txt
 
+# Visual Studio files
+*.user
+*.lock.json
+.vscode/
+.vs/
+.nuget/
+packages/
+bin/
+obj/
+logs/
+
+# Optimizely files
+modules/
+/modules/*
+!/modules/_protected/
+/modules/_protected/*
+!/modules/_protected/*.config
+!/modules/_protected/
+*license.config
+
+

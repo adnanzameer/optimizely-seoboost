@@ -1,5 +1,8 @@
 # Changelog
 
+## Changes in version 2.2.2
+-Alternate links: build from indexed language branches filtered by effective availability from ContentLanguageSettingsRepository with inheritance, generate unique URLs per culture, and set x-default from the master branch.
+
 ## Changes in version 2.2.1
 - Fixed breadcrumb hierarchy issue if the start page is not the site start page
 

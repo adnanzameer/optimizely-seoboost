@@ -22,6 +22,7 @@ namespace SeoBoost.Business.Configuration
             services.AddHttpContextOrThreadScoped<IUrlService, UrlService>();
             services.AddTransient<IViewTemplateModelRegistrator, TemplateCoordinator>();
             services.AddTransient<IAlternateLinksHelper, AlternateLinksHelper>();
+            services.AddTransient<IPageLanguageSettingsService, PageLanguageSettingsService>();
             services.AddSingleton<SeoBoostInitializer>();
             services.AddSingleton<UrlBuilder>();
 
