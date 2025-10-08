@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
 	<TargetFramework>net6.0</TargetFramework>
-	<OutputPath>bin\</OutputPath>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	<PackageId>SeoBoost</PackageId>
@@ -20,7 +19,6 @@
 	<PackageTags>seo hreflang alternate links canonical tag breadcrumbs robots.txt internationalization A2Z</PackageTags>
 	<RepositoryUrl>https://github.com/adnanzameer/optimizely-seoboost.git</RepositoryUrl>
 	<StaticWebAssetBasePath>/_content/</StaticWebAssetBasePath>
-	<NuspecFile>SeoBoost.nuspec</NuspecFile>
   </PropertyGroup>
   <ItemGroup>
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
