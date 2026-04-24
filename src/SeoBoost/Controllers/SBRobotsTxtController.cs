@@ -6,6 +6,7 @@ using EPiServer.Globalization;
 using EPiServer.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SeoBoost.Business.Attributes;
 using SeoBoost.Extensions;
 using SeoBoost.Models.Pages;
 

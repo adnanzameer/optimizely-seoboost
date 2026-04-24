@@ -42,6 +42,8 @@ public class Startup
             x.EnableRobotsTxtSupport = true; // Default false
             x.UseMirrorPageReference = true; // Default false
             x.UseSiteUrlAsHost = true; // Default false
+            x.UseStartPageCanonicalWithoutLanguageSegment = false; // Default false
+            x.PreserveUrlCasing = false;
         });
 
         services.AddSession(options =>

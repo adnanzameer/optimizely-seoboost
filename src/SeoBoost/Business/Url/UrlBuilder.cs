@@ -71,7 +71,29 @@ namespace SeoBoost.Business.Url
 
             if (string.IsNullOrEmpty(result) && _configuration.UseSimpleAddressAsPath && !string.IsNullOrEmpty(pageData.ExternalURL))
             {
-                result = pageData.ExternalURL;
+                var simpleAddress = pageData.ExternalURL.StartsWith("/")
+                    ? pageData.ExternalURL
+                    : "/" + pageData.ExternalURL;
+
+                var langPrefix = "/" + contentLanguage.Name.ToLower() + "/";
+                if (!simpleAddress.StartsWith(langPrefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Resolve the standard URL to detect whether a path-based language prefix
+                    // is expected. A relative result means a wildcard host (language is in the
+                    // path); an absolute result means a language-specific domain (language is
+                    // in the host, handled later by the hostLanguage block).
+                    var resolvedUrl = _urlResolver.GetUrl(pageData.ContentLink, contentLanguage.Name,
+                        new VirtualPathArguments { ContextMode = ContextMode.Default, ForceCanonical = true });
+
+                    if (!string.IsNullOrEmpty(resolvedUrl)
+                        && !Uri.TryCreate(resolvedUrl, UriKind.Absolute, out _)
+                        && resolvedUrl.StartsWith(langPrefix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        simpleAddress = langPrefix.TrimEnd('/') + simpleAddress;
+                    }
+                }
+
+                result = simpleAddress;
             }
 
             if (string.IsNullOrEmpty(result))
@@ -86,6 +108,21 @@ namespace SeoBoost.Business.Url
                 });
 
                 result = pageUrl;
+            }
+
+            var languageSegmentStripped = false;
+            if (_configuration.UseStartPageCanonicalWithoutLanguageSegment
+                && !string.IsNullOrEmpty(result)
+                && contentLink.ID == ContentReference.StartPage.ID
+                && pageData.IsMasterLanguageBranch
+                && pageData.Language.Name.Equals(contentLanguage.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                var langPrefix = "/" + contentLanguage.Name.ToLower() + "/";
+                if (result.StartsWith(langPrefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    result = "/" + result.Substring(langPrefix.Length);
+                    languageSegmentStripped = true;
+                }
             }
 
             if (!Uri.TryCreate(result, UriKind.RelativeOrAbsolute, out var relativeUri))
@@ -124,11 +161,31 @@ namespace SeoBoost.Business.Url
                 Uri.TryCreate(SiteDefinition.Current.SiteUrl.AbsoluteUri, UriKind.Absolute, out baseUri);
             }
 
+            // For same-domain language hosts the URL resolver omits the language segment from
+            // the path (it considers the host itself the language identifier). Re-add the
+            // segment so the canonical always carries the language prefix — unless we
+            // deliberately stripped it above (UseStartPageCanonicalWithoutLanguageSegment).
+            if (!languageSegmentStripped
+                && !string.IsNullOrEmpty(hostLanguage)
+                && baseUri != null
+                && baseUri.Host.Equals(siteDefinition.SiteUrl.Host, StringComparison.OrdinalIgnoreCase))
+            {
+                var normalizedPath = result.StartsWith("/") ? result : "/" + result;
+                if (!normalizedPath.StartsWith(hostLanguage, StringComparison.OrdinalIgnoreCase))
+                {
+                    result = hostLanguage.TrimEnd('/') + normalizedPath;
+                    Uri.TryCreate(result, UriKind.Relative, out relativeUri);
+                }
+            }
+
             if (baseUri != null)
             {
                 var absoluteUri = new Uri(baseUri, relativeUri);
-                if (!string.IsNullOrEmpty(hostLanguage))
+                if (!string.IsNullOrEmpty(hostLanguage)
+                    && !baseUri.Host.Equals(siteDefinition.SiteUrl.Host, StringComparison.OrdinalIgnoreCase))
                 {
+                    // Language-specific domain (e.g. en.example.com): strip language from path
+                    // because the domain already encodes the language.
                     var absoluteUrl = absoluteUri.AbsoluteUri.Replace(hostLanguage, "/");
                     return ApplyTrailingSlash(absoluteUrl);
                 }
@@ -220,7 +277,7 @@ namespace SeoBoost.Business.Url
                 url = url.TrimEnd('/');
             }
 
-            return url.ToLower();
+            return _configuration.PreserveUrlCasing ? url : url.ToLower();
         }
         
 
@@ -240,7 +297,7 @@ namespace SeoBoost.Business.Url
 
             var currentUrl = _contextAccessor.HttpContext.Request.Path;
 
-            if (string.IsNullOrEmpty(currentUrl.Value) || !currentUrl.HasValue)
+            if (!currentUrl.HasValue || string.IsNullOrEmpty(currentUrl.Value))
             {
                 return string.Empty;
             }

@@ -1,5 +1,18 @@
 # Changelog
 
+## Changes in version 2.3.0
+
+### New options
+- `UseStartPageCanonicalWithoutLanguageSegment`: When enabled, the canonical URL for the master language branch of the start page is generated without the language segment (e.g. `https://example.com/` instead of `https://example.com/en/`). Other language branches of the start page retain their language segment.
+- `PreserveUrlCasing`: By default all generated canonical and alternate link URLs are lowercased. Enable this option to preserve the original casing as resolved by Optimizely.
+
+### Bug fixes
+- Fixed canonical and alternate link URLs losing the language segment for pages when using a same-domain language host configuration (e.g. `localhost:5000` assigned to a language in site settings).
+- Fixed canonical URLs missing the language segment when `UseSimpleAddressAsPath` is enabled and the page has a simple address (ExternalURL) configured — the language prefix is now correctly derived from the standard URL resolver output and applied to the simple address.
+- Fixed `AlternateLinksHelper` using `ServiceLocator` to resolve `IContextModeResolver`; it is now injected via constructor.
+- Fixed `BreadcrumbsViewModel.IsChild` using `GetDescendents` (loads entire subtree) replaced with `GetAncestors` walk — O(depth) instead of O(n).
+- Fixed `HttpContextUtility.GetItem` returning an empty string on cache miss; it now returns `null`, consistent with `GetItems<T>`.
+
 ## Changes in version 2.2.2
 -Alternate links: build from indexed language branches filtered by effective availability from ContentLanguageSettingsRepository with inheritance, generate unique URLs per culture, and set x-default from the master branch.
 

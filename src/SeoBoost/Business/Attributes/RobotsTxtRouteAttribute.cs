@@ -9,6 +9,8 @@ using Microsoft.Extensions.Options;
 using SeoBoost.Models;
 using SeoBoost.Models.Pages;
 
+namespace SeoBoost.Business.Attributes;
+
 public class RobotsTxtRouteAttribute : Attribute, IRouteTemplateProvider
 {
     private int? _order;
@@ -42,5 +44,5 @@ public class RobotsTxtRouteAttribute : Attribute, IRouteTemplateProvider
 
     int? IRouteTemplateProvider.Order => _order;
 
-    public string? Name { get; set; }
+    public string Name { get; set; }
 }

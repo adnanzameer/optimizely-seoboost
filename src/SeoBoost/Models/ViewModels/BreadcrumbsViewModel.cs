@@ -73,8 +73,8 @@ namespace SeoBoost.Models.ViewModels
 
         private static bool IsChild(ContentReference startPageReference, ContentReference currentContentReference)
         {
-            var descendants = ContentLoader.Service.GetDescendents(startPageReference);
-            return descendants.Contains(currentContentReference);
+            var ancestors = ContentLoader.Service.GetAncestors(currentContentReference);
+            return ancestors.Any(a => a.ContentLink.ID == startPageReference.ID);
         }
 
         private static PageData GetPageData(ContentReference reference)

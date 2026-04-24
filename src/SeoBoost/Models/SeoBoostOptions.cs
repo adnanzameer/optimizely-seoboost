@@ -7,5 +7,7 @@
         public bool EnableRobotsTxtSupport { get; set; } = false;
         public bool UseSiteUrlAsHost { get; set; } = false;
         public string CustomCanonicalTagFieldName { get; set; } = "";
+        public bool UseStartPageCanonicalWithoutLanguageSegment { get; set; } = false;
+        public bool PreserveUrlCasing { get; set; } = false;
     }
 }

@@ -47,6 +47,8 @@ public void ConfigureServices(IServiceCollection services)
         x.EnableRobotsTxtSupport = true; // Default false
         x.UseMirrorPageReference = true; // Default true
         x.UseSiteUrlAsHost = true; // Default false
+        x.UseStartPageCanonicalWithoutLanguageSegment = true; // Default false
+        x.PreserveUrlCasing = true; // Default false
     });
 
     OR
@@ -86,11 +88,13 @@ In addition, the configuration can be read from the `appsettings.json`:
 
 ```Json
 "SeoBoost": {
-    "CustomCanonicalTagFieldName":  "CanonicalTag", // Default "", 
+    "CustomCanonicalTagFieldName": "CanonicalTag", // Default ""
     "UseSimpleAddressAsPath": true, // Default false
-    "EnableRobotsTxtSupport": true, // Default false,
-    "UseMirrorPageReference": true, // Default true,
-    "UseSiteUrlAsHost": true, // Default false,
+    "EnableRobotsTxtSupport": true, // Default false
+    "UseMirrorPageReference": true, // Default true
+    "UseSiteUrlAsHost": true, // Default false
+    "UseStartPageCanonicalWithoutLanguageSegment": true, // Default false
+    "PreserveUrlCasing": true // Default false
 }
 ```
 
@@ -131,6 +135,18 @@ The default behavior is for the host part of the URL to be generated based on th
 #### 5. EnableRobotsTxtSupport
 
 Enabling this option will activate support for the **robots.txt** file in the CMS, making a **robots.txt** page type available to editors and establishing the **/robots.txt** route.
+
+#### 6. UseStartPageCanonicalWithoutLanguageSegment
+
+When enabled, the canonical URL for the **master language branch** of the start page is generated without the language segment. This self-canonicalises the root URL.
+
+For example, if Italian (`it`) is the master language, the canonical will be `https://example.com/` instead of `https://example.com/it/`. Other language branches of the start page (e.g. `/pl/`, `/cn/`) are unaffected and retain their language segment in the canonical.
+
+This option only applies to the start page master language branch. All other pages are unaffected.
+
+#### 7. PreserveUrlCasing
+
+By default, SEOBOOST lowercases all generated canonical and alternate link URLs. Enabling this option preserves the original casing of the URL as resolved by Optimizely.
 
 ## How to Use
 

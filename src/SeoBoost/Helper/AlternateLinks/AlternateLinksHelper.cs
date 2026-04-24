@@ -1,7 +1,6 @@
 ﻿using EPiServer;
 using EPiServer.Core;
 using EPiServer.DataAbstraction;
-using EPiServer.ServiceLocation;
 using EPiServer.Web;
 using EPiServer.Web.Routing;
 using Microsoft.AspNetCore.Html;
@@ -27,14 +26,16 @@ namespace SeoBoost.Helper.AlternateLinks
         private readonly IUrlService _urlService;
         private readonly ILanguageBranchRepository _languageBranchRepository;
         private readonly IPageLanguageSettingsService _pageLanguageSettingsService;
+        private readonly IContextModeResolver _contextModeResolver;
 
-        public AlternateLinksHelper(IContentRepository contentRepository, IContentRouteHelper contentRouteHelper, IUrlService urlService, IPageLanguageSettingsService pageLanguageSettingsService, ILanguageBranchRepository languageBranchRepository)
+        public AlternateLinksHelper(IContentRepository contentRepository, IContentRouteHelper contentRouteHelper, IUrlService urlService, IPageLanguageSettingsService pageLanguageSettingsService, ILanguageBranchRepository languageBranchRepository, IContextModeResolver contextModeResolver)
         {
             _contentRepository = contentRepository;
             _contentRouteHelper = contentRouteHelper;
             _urlService = urlService;
             _pageLanguageSettingsService = pageLanguageSettingsService;
             _languageBranchRepository = languageBranchRepository;
+            _contextModeResolver = contextModeResolver;
         }
 
         public AlternativeLinkViewModel GetAlternateLinksModel(ContentReference contentReference)
@@ -147,11 +148,9 @@ namespace SeoBoost.Helper.AlternateLinks
             }
         }
 
-        private static bool IsInEditMode()
+        private bool IsInEditMode()
         {
-            var contextModeResolver = ServiceLocator.Current.GetInstance<IContextModeResolver>();
-            var mode = contextModeResolver.CurrentMode;
-            return mode is ContextMode.Edit or ContextMode.Preview;
+            return _contextModeResolver.CurrentMode is ContextMode.Edit or ContextMode.Preview;
         }
 
         private bool IsPageData => _contentRouteHelper.Content is PageData;
