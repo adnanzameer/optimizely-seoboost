@@ -49,7 +49,7 @@ namespace SeoBoost.Models.ViewModels
         private PageData FindStartPage(PageData page)
         {
             var parent = GetParent(page);
-            if (parent == null || parent.PageLink.ID == ContentReference.RootPage.ID)
+            if (parent == null || parent.ContentLink.ID == ContentReference.RootPage.ID)
                 return page;
 
             return FindStartPage(parent);
@@ -95,7 +95,7 @@ namespace SeoBoost.Models.ViewModels
 
         private static PageData GetParent(PageData currentPage)
         {
-            if (currentPage.ParentLink == PageReference.EmptyReference)
+            if (currentPage.ParentLink == ContentReference.EmptyReference)
                 return null;
 
             var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(ContentLanguage.PreferredCulture) };

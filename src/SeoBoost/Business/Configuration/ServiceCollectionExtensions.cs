@@ -1,5 +1,4 @@
 ﻿using System;
-using EPiServer.ServiceLocation;
 using EPiServer.Web.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +18,7 @@ namespace SeoBoost.Business.Configuration
 
         public static IServiceCollection AddSeoBoost(this IServiceCollection services, Action<SeoBoostOptions> setupAction)
         {
-            services.AddHttpContextOrThreadScoped<IUrlService, UrlService>();
+            services.AddScoped<IUrlService, UrlService>();
             services.AddTransient<IViewTemplateModelRegistrator, TemplateCoordinator>();
             services.AddTransient<IAlternateLinksHelper, AlternateLinksHelper>();
             services.AddTransient<IPageLanguageSettingsService, PageLanguageSettingsService>();

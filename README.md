@@ -1,9 +1,8 @@
 # SEOBOOST for Optimizely
 
 ## Description
-[![Platform](https://img.shields.io/badge/Platform-.NET%206-blue.svg?style=flat)](https://docs.microsoft.com/en-us/dotnet/)
-[![Platform](https://img.shields.io/badge/Optimizely-%2012-blue.svg?style=flat)](http://world.episerver.com/cms/)
-[![Platform](https://img.shields.io/badge/EPiServer-%2012-orange.svg?style=flat)](http://world.episerver.com/cms/)
+[![Platform](https://img.shields.io/badge/Platform-.NET%2010-blue.svg?style=flat)](https://docs.microsoft.com/en-us/dotnet/)
+[![Platform](https://img.shields.io/badge/Optimizely-%2013-blue.svg?style=flat)](http://world.optimizely.com/cms/)
 
 This package empowers developers and editors to enhance the website's SEO ranking through the utilization of helpful methods and features it offers.
 
@@ -272,11 +271,9 @@ Sandbox application is testing poligon for package new features and bug fixes.
 
 **ADMIN**
 
-Username: **admin**
-
 Username: **sysadmin**
 
-Password: **Sandbox#123**
+Password: **Sandbox##123**
 
 ## Contributing
 
@@ -288,6 +285,9 @@ If you have new ideas or feature requests that can make this tool even more usef
 
 https://github.com/adnanzameer/optimizely-seoboost/issues
 
+## Optimizely (Episerver) CMS 12 Support
+
+For users still on Optimizely (Episerver) CMS 12, SEOBOOST is available on: https://github.com/adnanzameer/optimizely-seoboost/tree/CMS12
 
 ## Optimizely (Episerver) CMS 11 Support
 

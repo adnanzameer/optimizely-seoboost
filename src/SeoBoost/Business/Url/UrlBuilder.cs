@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using SeoBoost.Business.Attributes;
 using SeoBoost.Helper;
 using SeoBoost.Models;
+#pragma warning disable CS0618 // ISiteDefinitionResolver is obsolete in CMS 13; IApplicationResolver returns a different type requiring a larger migration
 
 namespace SeoBoost.Business.Url
 {
@@ -158,7 +159,7 @@ namespace SeoBoost.Business.Url
 
             if (baseUri == null)
             {
-                Uri.TryCreate(SiteDefinition.Current.SiteUrl.AbsoluteUri, UriKind.Absolute, out baseUri);
+                Uri.TryCreate(siteDefinition.SiteUrl.AbsoluteUri, UriKind.Absolute, out baseUri);
             }
 
             // For same-domain language hosts the URL resolver omits the language segment from
@@ -215,7 +216,8 @@ namespace SeoBoost.Business.Url
             if (customRelativeUri.IsAbsoluteUri)
                 return ApplyTrailingSlash(propertyValue);
 
-            var siteUri = new Uri(SiteDefinition.Current.SiteUrl.AbsoluteUri);
+            var siteDefinition = _siteDefinitionResolver.GetByContent(contentLink, true, true);
+            var siteUri = new Uri((siteDefinition?.SiteUrl ?? SiteDefinition.Empty.SiteUrl).AbsoluteUri);
             var absoluteUri = new Uri(siteUri, customRelativeUri);
 
             return ApplyTrailingSlash(absoluteUri.AbsoluteUri);
@@ -235,7 +237,11 @@ namespace SeoBoost.Business.Url
             if (customRelativeUri.IsAbsoluteUri)
                 return ApplyTrailingSlash(dynamicCanonicalUrl);
 
-            var siteUri = new Uri(SiteDefinition.Current.SiteUrl.AbsoluteUri);
+            var request = _contextAccessor.HttpContext?.Request;
+            if (request == null)
+                return null;
+
+            var siteUri = new Uri($"{request.Scheme}://{request.Host}");
             var absoluteUri = new Uri(siteUri, customRelativeUri);
 
             return ApplyTrailingSlash(absoluteUri.AbsoluteUri);
@@ -246,9 +252,9 @@ namespace SeoBoost.Business.Url
         {
             if (IsMirrored(currentPage))
             {
-                var target = (PropertyPageReference)currentPage.Property["PageShortcutLink"];
+                var target = (PropertyContentReference)currentPage.Property["PageShortcutLink"];
                 var loadingOptions = new LoaderOptions { LanguageLoaderOption.FallbackWithMaster(contentLanguage) };
-                var targetPage = _contentRepository.Get<PageData>(target.PageLink, loadingOptions);
+                var targetPage = _contentRepository.Get<PageData>(target.ContentLink, loadingOptions);
                 return targetPage ?? currentPage;
             }
 

@@ -1,45 +1,50 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
-	<TargetFramework>net6.0</TargetFramework>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
-	<PackageId>SeoBoost</PackageId>
-	<Title>SeoBoost</Title>
-	<version>2.3.0</version>
-	<Authors>Adnan Zameer</Authors>
-	<Company>Adnan Zameer</Company>
-	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	<PackageProjectUrl>https://github.com/adnanzameer/optimizely-seoboost</PackageProjectUrl>
-	<icon>icon.png</icon>
-	<PackageIcon>icon.png</PackageIcon>
-	<iconUrl>https://raw.githubusercontent.com/adnanzameer/SEOBOOST/master/SeoBoost/icon.png</iconUrl>
-	<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-	<Description>SeoBoost for Optimizely - Improves SEO ranking of the website with HtmlHelper methods for Internationalization i.e hreflang attributes (Alternate links), canonical tag (rel canonical), Breadcrumbs and editable robots.txt</Description>
-	<PackageReleaseNotes>https://github.com/adnanzameer/optimizely-seoboost/blob/master/CHANGELOG.md</PackageReleaseNotes>
-	<PackageTags>seo hreflang alternate links canonical tag breadcrumbs robots.txt internationalization A2Z</PackageTags>
-	<RepositoryUrl>https://github.com/adnanzameer/optimizely-seoboost.git</RepositoryUrl>
-	<StaticWebAssetBasePath>/_content/</StaticWebAssetBasePath>
+    <TargetFramework>net10.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <PackageId>SeoBoost</PackageId>
+    <Title>SeoBoost</Title>
+    <version>3.0.0</version>
+    <Authors>Adnan Zameer</Authors>
+    <Company>Adnan Zameer</Company>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/adnanzameer/optimizely-seoboost</PackageProjectUrl>
+    <icon>icon.png</icon>
+    <PackageIcon>icon.png</PackageIcon>
+    <iconUrl>https://raw.githubusercontent.com/adnanzameer/SEOBOOST/master/SeoBoost/icon.png</iconUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>SeoBoost for Optimizely - Improves SEO ranking of the website with HtmlHelper methods for Internationalization i.e hreflang attributes (Alternate links), canonical tag (rel canonical), Breadcrumbs and editable robots.txt</Description>
+    <PackageReleaseNotes>https://github.com/adnanzameer/optimizely-seoboost/blob/master/CHANGELOG.md</PackageReleaseNotes>
+    <PackageTags>seo hreflang alternate links canonical tag breadcrumbs robots.txt internationalization A2Z</PackageTags>
+    <RepositoryUrl>https://github.com/adnanzameer/optimizely-seoboost.git</RepositoryUrl>
+    <StaticWebAssetBasePath>/_content/</StaticWebAssetBasePath>
   </PropertyGroup>
+
   <ItemGroup>
-	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="EPiServer.CMS" Version="12.0.2" />
-	<PackageReference Include="EPiServer.Framework" Version="12.0.3" />
+    <PackageReference Include="EPiServer.CMS" Version="13.0.0" />
+    <PackageReference Include="EPiServer.Framework" Version="13.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-	<None Include="icon.png" Pack="true" PackagePath="" />
+    <None Include="icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>
-	<Content Include=".\msbuild\CopyModule.targets">
-	  <Pack>true</Pack>
-	  <PackageCopyToOutput>true</PackageCopyToOutput>
-	  <BuildAction>None</BuildAction>
-	  <PackagePath>build\net6.0\$(MSBuildProjectName).targets</PackagePath>
-	</Content>
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-9j88-vvj5-vhgr" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".\msbuild\CopyModule.targets">
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <BuildAction>None</BuildAction>
+      <PackagePath>build\net10.0\$(MSBuildProjectName).targets</PackagePath>
+    </Content>
   </ItemGroup>
 
 </Project>

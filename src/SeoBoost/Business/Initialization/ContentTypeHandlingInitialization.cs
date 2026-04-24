@@ -2,8 +2,8 @@
 using EPiServer.DataAbstraction;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
-using EPiServer.ServiceLocation;
 using EPiServer.Web;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SeoBoost.Models;
 using SeoBoost.Models.Pages;
@@ -16,9 +16,9 @@ namespace SeoBoost.Business.Initialization
     {
         public void Initialize(InitializationEngine context)
         {
-            var option = context.Locate.Advanced.GetInstance<IOptions<SeoBoostOptions>>();
+            var option = context.Services.GetRequiredService<IOptions<SeoBoostOptions>>();
 
-            var contentTypeRepository = ServiceLocator.Current.GetInstance<IContentTypeRepository>();
+            var contentTypeRepository = context.Services.GetRequiredService<IContentTypeRepository>();
 
             var robotsTxtContentType = contentTypeRepository.List().FirstOrDefault(ct => ct.ModelType == typeof(SBRobotsTxt));
 

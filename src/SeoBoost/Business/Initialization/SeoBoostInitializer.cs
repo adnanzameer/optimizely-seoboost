@@ -4,7 +4,7 @@ using EPiServer.Core;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Globalization;
-using EPiServer.ServiceLocation;
+using Microsoft.Extensions.DependencyInjection;
 using SeoBoost.Models.Pages;
 
 namespace SeoBoost.Business.Initialization
@@ -17,9 +17,9 @@ namespace SeoBoost.Business.Initialization
 
         public void Initialize(InitializationEngine context)
         {
-            _contentLoader = context.Locate.Advanced.GetInstance<IContentLoader>();
+            _contentLoader = context.Services.GetRequiredService<IContentLoader>();
 
-            var events = context.Locate.ContentEvents();
+            var events = context.Services.GetRequiredService<IContentEvents>();
             events.CreatingContent += ContentEvents_CreatingContent;
             events.PublishingContent += Instance_PublishingPage;
             events.MovingContent += ContentEvents_MovingContent;
@@ -91,7 +91,7 @@ namespace SeoBoost.Business.Initialization
 
         public void Uninitialize(InitializationEngine context)
         {
-            var events = context.Locate.ContentEvents();
+            var events = context.Services.GetRequiredService<IContentEvents>();
 
             events.CreatingContent -= ContentEvents_CreatingContent;
             events.PublishingContent -= Instance_PublishingPage;
